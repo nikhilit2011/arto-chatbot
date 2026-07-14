@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <title>ARTO Haridwar Chatbot</title>
+  <%= csrf_meta_tags %>
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+  <div class="max-w-2xl mx-auto pt-10 px-4">
+    <div class="bg-white rounded-3xl shadow-2xl overflow-hidden">
+      
+      <!-- Header -->
+      <div class="bg-blue-700 text-white p-6 text-center">
+        <h1 class="text-3xl font-bold flex items-center justify-center gap-3">
+          🚗 ARTO Haridwar
+        </h1>
+        <p class="mt-1 opacity-90">आपका परिवहन सहायक</p>
+      </div>
+
+      <!-- Chat Window -->
+      <div id="chat-window" class="h-[520px] overflow-y-auto p-6 space-y-6 bg-gray-50"></div>
+
+      <!-- Quick Menu -->
+      <div class="p-6 bg-white border-t">
+        <p class="text-sm font-medium text-gray-600 mb-3">सेवा चुनें:</p>
+        <div class="grid grid-cols-2 gap-3 text-sm" id="menu-buttons">
+          <!-- Buttons will be added by JavaScript -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const services = [
+      { name: "Driving Licence (नया)", key: "driving_licence" },
+      { name: "DL Renewal", key: "dl_renewal" },
+      { name: "New Vehicle Registration", key: "new_vehicle_registration" },
+      { name: "Vehicle Transfer", key: "vehicle_transfer" },
+      { name: "Vehicle Renewal", key: "vehicle_renewal" },
+      { name: "Vehicle NOC", key: "vehicle_noc" },
+      { name: "Phone Number Update", key: "phone_update" }
+    ];
+
+    function addMessage(text, isUser = false) {
+      const chat = document.getElementById('chat-window');
+      const div = document.createElement('div');
+      div.className = isUser ? 'flex justify-end' : 'flex justify-start';
+      div.innerHTML = `
+        <div class="${isUser ? 'bg-blue-600 text-white' : 'bg-white border border-gray-200'} max-w-[90%] rounded-2xl px-5 py-4">
+          ${text}
+        </div>`;
+      chat.appendChild(div);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    async function getGuide(topic) {
+      try {
+        const res = await fetch('/chatbot/respond', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+          },
+          body: JSON.stringify({ message: topic })
+        });
+        const data = await res.json();
+        addMessage(data.reply, false);
+      } catch (e) {
+        addMessage("⚠️ कुछ समस्या हुई है। कृपया दोबारा ट्राई करें।", false);
+      }
+    }
+
+    function createMenu() {
+      const container = document.getElementById('menu-buttons');
+      services.forEach(service => {
+        const btn = document.createElement('button');
+        btn.className = "bg-white hover:bg-blue-50 border border-blue-200 text-blue-700 font-medium py-3 px-4 rounded-2xl transition text-left";
+        btn.textContent = service.name;
+        btn.onclick = () => {
+          addMessage(service.name, true);
+          getGuide(service.key);
+        };
+        container.appendChild(btn);
+      });
+    }
+
+    // Welcome Message
+    window.onload = () => {
+      addMessage("नमस्ते 🙏<br>ARTO Haridwar चैटबॉट में आपका स्वागत है।<br><br>नीचे दी गई सेवाओं में से कोई एक चुनें:", false);
+      createMenu();
+    };
+  </script>
+</body>
+</html>
