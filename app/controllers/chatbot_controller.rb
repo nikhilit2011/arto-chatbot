@@ -15,8 +15,13 @@ class ChatbotController < ApplicationController
   end
 
   def seed
-    load Rails.root.join('db/seeds.rb')
-    render json: { message: "✅ Data seeded successfully! You can now use the buttons." }
+    begin
+      Guide.delete_all  # Stronger than destroy_all
+      load Rails.root.join('db/seeds.rb')
+      render json: { message: "✅ Data refreshed successfully!<br>Please refresh the page (Ctrl + R)." }
+    rescue => e
+      render json: { message: "❌ Error: #{e.message}" }
+    end
   end
 
   private
