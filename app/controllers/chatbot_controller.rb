@@ -16,9 +16,9 @@ class ChatbotController < ApplicationController
 
   def seed
     begin
-      Guide.delete_all  # Stronger than destroy_all
+      Guide.delete_all
       load Rails.root.join('db/seeds.rb')
-      render json: { message: "✅ Data refreshed successfully!<br>Please refresh the page (Ctrl + R)." }
+      render json: { message: "✅ Data refreshed successfully!<br>Please refresh the page." }
     rescue => e
       render json: { message: "❌ Error: #{e.message}" }
     end
@@ -49,11 +49,23 @@ class ChatbotController < ApplicationController
 
   def format_steps(guide)
     steps = JSON.parse(guide.steps)
-    html = "<div class='font-semibold text-lg text-blue-800 mb-4'>#{guide.topic.humanize}</div>"
+    
+    # Custom nice titles
+    title = case guide.topic
+            when "driving_licence" then "Driving Licence (New)"
+            when "dl_renewal" then "DL Renewal"
+            when "new_vehicle_registration" then "New Vehicle Registration"
+            when "vehicle_transfer" then "Vehicle Transfer"
+            when "vehicle_renewal" then "Vehicle Renewal (RC Renewal)"
+            when "vehicle_noc" then "Vehicle NOC"
+            when "phone_update" then "Phone Number Update"
+            else guide.topic.humanize
+            end
+
+    html = "<div class='font-semibold text-xl text-blue-800 mb-4'>#{title}</div>"
     html += "<ol class='list-decimal pl-6 space-y-3 text-gray-800'>"
     
     steps.each do |step|
-      # Make URLs clickable
       step_with_link = step.gsub(/(https?:\/\/[^\s]+)/) do |url|
         "<a href='#{url}' target='_blank' class='text-blue-600 underline hover:text-blue-800'>#{url}</a>"
       end
