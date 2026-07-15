@@ -28,19 +28,19 @@ class ChatbotController < ApplicationController
 
   def detect_topic(message)
     case message
-    when /driving_licence|driving licence|new dl/
+    when /driving_licence|new dl|driving licence|नया लाइसेंस/
       "driving_licence"
-    when /dl_renewal|dl renewal|renewal|लाइसेंस रिन्यू/
+    when /dl_renewal|dl renewal|license renewal|लाइसेंस रिन्यू/
       "dl_renewal"
-    when /new_vehicle_registration|new registration|new vehicle/
+    when /new_vehicle_registration|new registration|new vehicle|नया पंजीकरण/
       "new_vehicle_registration"
-    when /vehicle_transfer|transfer|ownership/
+    when /vehicle_transfer|transfer|ownership transfer|ट्रांसफर/
       "vehicle_transfer"
-    when /vehicle_renewal|rc renewal|renewal.*vehicle/
+    when /vehicle_renewal|rc renewal|renewal.*rc|rc.*renewal|वाहन रिन्यू|rc रिन्यू/
       "vehicle_renewal"
-    when /vehicle_noc|noc/
+    when /vehicle_noc|noc|no objection/
       "vehicle_noc"
-    when /phone_update|mobile|phone number/
+    when /phone_update|mobile update|phone number|मोबाइल नंबर/
       "phone_update"
     else
       nil
