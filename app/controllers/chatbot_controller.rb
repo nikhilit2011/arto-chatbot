@@ -44,6 +44,18 @@ class ChatbotController < ApplicationController
 
   def format_steps(guide)
     steps = JSON.parse(guide.steps)
-    "<strong>#{guide.topic.humanize}</strong><br><ol class='list-decimal pl-6 mt-3 space-y-2'>#{steps.map { |s| "<li>#{s}</li>" }.join}</ol>"
+    html = "<div class='font-semibold text-lg text-blue-800 mb-4'>#{guide.topic.humanize}</div>"
+    html += "<ol class='list-decimal pl-6 space-y-3 text-gray-800'>"
+    
+    steps.each do |step|
+      # Make URLs clickable
+      step_with_link = step.gsub(/(https?:\/\/[^\s]+)/) do |url|
+        "<a href='#{url}' target='_blank' class='text-blue-600 underline hover:text-blue-800'>#{url}</a>"
+      end
+      html += "<li>#{step_with_link}</li>"
+    end
+    
+    html += "</ol>"
+    html
   end
 end
