@@ -2,36 +2,47 @@
 <html lang="hi">
 <head>
   <meta charset="UTF-8">
-  <title>ARTO Haridwar Chatbot</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARTO Haridwar - Chatbot</title>
   <%= csrf_meta_tags %>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- For beautiful link preview when shared -->
+  <meta property="og:title" content="ARTO Haridwar Chatbot">
+  <meta property="og:description" content="Driving Licence, Vehicle Registration, RC Renewal, NOC और अन्य सेवाओं की जानकारी">
+  <meta property="og:image" content="https://arto-chatbot.onrender.com/assets/og-image.jpg"> <!-- You can change later -->
+  <meta property="og:url" content="https://arto-chatbot.onrender.com/">
 </head>
-<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
-  <div class="max-w-2xl mx-auto pt-10 px-4">
+<body class="bg-gradient-to-br from-blue-50 via-indigo-50 to-blue-100 min-h-screen">
+  <div class="max-w-2xl mx-auto pt-8 px-4">
     <div class="bg-white rounded-3xl shadow-2xl overflow-hidden">
-      <div class="bg-blue-700 text-white p-6 text-center">
-        <h1 class="text-3xl font-bold">🚗 ARTO Haridwar</h1>
-        <p class="mt-1 opacity-90">आपका परिवहन सहायक चैटबॉट</p>
+      <!-- Beautiful Header -->
+      <div class="bg-gradient-to-r from-blue-700 to-indigo-700 text-white p-8 text-center relative">
+        <div class="text-5xl mb-3">🚗</div>
+        <h1 class="text-4xl font-bold tracking-tight">ARTO Haridwar</h1>
+        <p class="mt-2 text-blue-100 text-lg">परिवहन विभाग, उत्तराखण्ड</p>
+        <p class="mt-1 text-sm opacity-90">आपका आधिकारिक चैटबॉट</p>
       </div>
 
-      <div id="chat-window" class="h-[500px] overflow-y-auto p-6 space-y-6 bg-gray-50"></div>
+      <div id="chat-window" class="h-[520px] overflow-y-auto p-6 space-y-6 bg-gray-50"></div>
 
       <div class="p-6 bg-white border-t">
-        <p class="text-sm font-medium text-gray-600 mb-3">सेवा चुनें:</p>
+        <p class="text-sm font-medium text-gray-600 mb-4 flex items-center gap-2">
+          <i class="fas fa-list-check"></i> 
+          उपलब्ध सेवाएँ चुनें
+        </p>
         <div class="grid grid-cols-2 gap-3 text-sm" id="menu-buttons"></div>
-        
-        <!-- Seed Button -->
-        <div class="mt-6 pt-4 border-t">
-          <button onclick="seedData()" 
-                  class="w-full bg-amber-600 hover:bg-amber-700 text-white py-3 rounded-2xl font-medium text-sm">
-            🌱 Refresh Data (Admin Only)
-          </button>
-        </div>
       </div>
     </div>
+
+    <p class="text-center text-xs text-gray-500 mt-6">
+      Made for Uttarakhand Transport Department • Haridwar
+    </p>
   </div>
 
   <script>
+    // Your existing script (services array, functions, etc.)
     const services = [
       { name: "Driving Licence (नया)", key: "driving_licence" },
       { name: "DL Renewal", key: "dl_renewal" },
@@ -61,22 +72,12 @@
       addMessage(data.reply, false);
     }
 
-    async function seedData() {
-      if (!confirm("Refresh / Seed Data?")) return;
-      const res = await fetch('/chatbot/seed', {
-        method: 'POST',
-        headers: {'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content}
-      });
-      const data = await res.json();
-      addMessage(data.message, false);
-    }
-
     function createMenu() {
       const container = document.getElementById('menu-buttons');
       services.forEach(service => {
         const btn = document.createElement('button');
-        btn.className = "bg-white hover:bg-blue-50 border border-blue-200 text-blue-700 font-medium py-3 px-4 rounded-2xl transition text-left";
-        btn.textContent = service.name;
+        btn.className = "bg-white hover:bg-blue-50 border border-blue-200 text-blue-700 font-medium py-4 px-5 rounded-2xl transition text-left flex items-center gap-2";
+        btn.innerHTML = `<i class="fas fa-chevron-right text-xs"></i> ${service.name}`;
         btn.onclick = () => {
           addMessage(service.name, true);
           getGuide(service.key);
@@ -86,7 +87,7 @@
     }
 
     window.onload = () => {
-      addMessage("नमस्ते 🙏<br>ARTO Haridwar चैटबॉट में आपका स्वागत है।<br><br>नीचे दी गई सेवाओं में से कोई एक चुनें:", false);
+      addMessage("नमस्ते 🙏<br><strong>ARTO Haridwar</strong> चैटबॉट में आपका स्वागत है।<br><br>नीचे दी गई सेवाओं में से कोई एक चुनें:", false);
       createMenu();
     };
   </script>
