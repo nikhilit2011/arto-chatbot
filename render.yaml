@@ -13,7 +13,7 @@ services:
           property: connectionString
     autoDeploy: true
 
-  - type: pgsql
+  - type: postgres
     name: arto-chatbot-db
     databaseName: arto_chatbot_production
     region: oregon
