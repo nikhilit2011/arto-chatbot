@@ -19,13 +19,6 @@
       <div class="p-6 bg-white border-t">
         <p class="text-sm font-medium text-gray-600 mb-3">सेवा चुनें:</p>
         <div class="grid grid-cols-2 gap-3 text-sm" id="menu-buttons"></div>
-        
-        <div class="mt-6 pt-4 border-t">
-          <button onclick="seedData()" 
-                  class="w-full bg-amber-600 hover:bg-amber-700 text-white py-3 rounded-2xl font-medium text-sm">
-            🌱 Refresh / Seed Data
-          </button>
-        </div>
       </div>
     </div>
   </div>
@@ -58,16 +51,6 @@
       });
       const data = await res.json();
       addMessage(data.reply, false);
-    }
-
-    async function seedData() {
-      if (!confirm("Seed data now?")) return;
-      const res = await fetch('/chatbot/seed', {
-        method: 'POST',
-        headers: {'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content}
-      });
-      const data = await res.json();
-      addMessage(data.message, false);
     }
 
     function createMenu() {
