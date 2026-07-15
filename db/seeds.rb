@@ -1,6 +1,9 @@
 Guide.destroy_all
 
-# DRIVING LICENCE SERVICES
+# ========================================
+# DRIVING LICENCE SERVICES (Sarathi)
+# ========================================
+
 Guide.create!(
   topic: "driving_licence",
   steps: [
@@ -30,7 +33,10 @@ Guide.create!(
   ].to_json
 )
 
-# VEHICLE SERVICES
+# ========================================
+# VEHICLE SERVICES (Vahan)
+# ========================================
+
 Guide.create!(
   topic: "new_vehicle_registration",
   steps: [
@@ -63,8 +69,9 @@ Guide.create!(
     "https://vahan.parivahan.gov.in → Online Services → Renewal of Registration चुनें।",
     "RC Number डालें।",
     "Current Insurance, PUC और Fitness Certificate अपलोड करें।",
+    "Form 25 भरें।",
     "Renewal Fee online pay करें।",
-    "ARTO Haridwar में Vehicle Physical Inspection के लिए Appointment बुक करें।",
+    "ARTO Haridwar में Vehicle Physical Inspection (Chassis Verification) के लिए Appointment बुक करें।",
     "Inspection के बाद Renewed RC प्राप्त करें।"
   ].to_json
 )
@@ -92,4 +99,4 @@ Guide.create!(
   ].to_json
 )
 
-puts "✅ All guides updated successfully with clean steps!"
+puts "✅ All guides updated with clean and accurate steps!"
